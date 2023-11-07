@@ -36,6 +36,11 @@ public class Main {
         bookRepository.save(book1);
         bookRepository.save(book2);
 
+        System.out.println(bookRepository.findAll() + "\n");
+        System.out.println(bookRepository.findById(22L) + "\n"); //merge
+
+        //bookRepository.removeAll(); //merge
+
         System.out.println(bookRepository.findAll());
     }
 }

@@ -39,6 +39,22 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public Book findById(Long id) {
+        String sql = "SELECT * FROM book WHERE id = ?";
+
+        try{
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return getBookFromResultSet(resultSet);
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -97,6 +113,18 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public void removeAll() {
+        String sql = "DELETE FROM book";
+
+        try{
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
 
