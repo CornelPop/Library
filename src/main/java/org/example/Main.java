@@ -1,46 +1,48 @@
 package org.example;
 
+import org.example.database.DatabaseConnectionFactory;
 import org.example.database.JDBConnectionWrapper;
+import org.example.model.AudioBook;
 import org.example.model.Book;
+import org.example.model.builder.AudioBookBuilder;
 import org.example.model.builder.BookBuilder;
 import org.example.repository.BookRepository;
+import org.example.repository.BookRepositoryCacheDecorator;
 import org.example.repository.BookRepositoryMySQL;
+import org.example.repository.Cache;
+import org.example.service.BookService;
+import org.example.service.BookServiceImpl;
 
 import java.time.LocalDate;
-import java.util.Date;
-
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
     public static void main(String[] args){
         System.out.println("Hello world!");
 
-        JDBConnectionWrapper connectionWrapper = new JDBConnectionWrapper("test_library");
+        BookRepository bookRepository = new BookRepositoryCacheDecorator(
+                new BookRepositoryMySQL(DatabaseConnectionFactory.getConnectionWrapper(true).getConnection()),
+                new Cache<>()
+        );
 
+        BookService bookService = new BookServiceImpl(bookRepository);
 
-
-        BookRepository bookRepository = new BookRepositoryMySQL(connectionWrapper.getConnection());
-
-        Book book1 = new BookBuilder()
-                .setAuthor("', '', null); SLEEP(20); --")
+        Book book = new BookBuilder()
+                .setAuthor("Cezar Petrescu")
                 .setTitle("Fram Ursul Polar")
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
                 .build();
-        Book book2 = new BookBuilder()
-                .setAuthor("', '', null); SLEEP(20); --")
-                .setTitle("Ion")
-                .setPublishedDate(LocalDate.of(1986, 12, 15))
+        Book book1 = new AudioBookBuilder()
+                .setAuthor("Pop Cornel")
+                .setTitle("Comoara din sertaru gol")
+                .setRunTime(120)
+                .setPublishedDate(LocalDate.of(2023, 12, 15))
                 .build();
 
-        bookRepository.save(book1);
-        bookRepository.save(book2);
+        //bookService.save(book);
 
-        System.out.println(bookRepository.findAll() + "\n");
-        System.out.println(bookRepository.findById(22L) + "\n"); //merge
+        System.out.println(bookService.findAll());
 
-        //bookRepository.removeAll(); //merge
-
-        System.out.println(bookRepository.findAll());
+        System.out.println(bookService.findAll());
+        System.out.println(bookService.getAgeOfBook(22L));
     }
 }

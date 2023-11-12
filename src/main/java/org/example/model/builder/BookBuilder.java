@@ -35,4 +35,8 @@ public class BookBuilder {
     public Book build(){
         return book;
     }
+
+    public AudioBookBuilder setRunTime(int i) {
+         return null;
+    }
 }

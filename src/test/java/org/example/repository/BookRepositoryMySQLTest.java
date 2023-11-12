@@ -13,15 +13,7 @@ class BookRepositoryMySQLTest {
 
     }
     @Test
-    public void testRemoveAll() throws SQLException{
-
-    }
-    @Test
-    public void testFindById(Long id) throws SQLException{
-
-    }
-    @Test
-    public void testSave(Book book) throws SQLException{
+    public void testRemoveAll() throws SQLException {
 
     }
 

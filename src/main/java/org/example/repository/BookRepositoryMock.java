@@ -2,14 +2,17 @@ package org.example.repository;
 
 import org.example.model.Book;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookRepositoryMock implements BookRepository{
     private List<Book> books;
+    private final Connection connection;
 
-    public BookRepositoryMock(){
+    public BookRepositoryMock(Connection connection){
+        this.connection = connection;
         books = new ArrayList<>();
     }
 
@@ -19,7 +22,7 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
-    public Book findById(Long id) {
+    public Optional<Book> findById(Long id) {
         return null;
     }
 
