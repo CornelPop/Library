@@ -1,48 +1,52 @@
 package org.example;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+import org.example.controller.LoginController;
 import org.example.database.DatabaseConnectionFactory;
 import org.example.database.JDBConnectionWrapper;
-import org.example.model.AudioBook;
 import org.example.model.Book;
-import org.example.model.builder.AudioBookBuilder;
 import org.example.model.builder.BookBuilder;
-import org.example.repository.BookRepository;
-import org.example.repository.BookRepositoryCacheDecorator;
-import org.example.repository.BookRepositoryMySQL;
-import org.example.repository.Cache;
-import org.example.service.BookService;
-import org.example.service.BookServiceImpl;
+import org.example.model.validator.UserValidator;
+import org.example.repository.book.BookRepository;
+import org.example.repository.book.BookRepositoryCacheDecorator;
+import org.example.repository.book.BookRepositoryMySQL;
+import org.example.repository.book.Cache;
+import org.example.repository.security.RightsRolesRepository;
+import org.example.repository.security.RightsRolesRepositoryMySQL;
+import org.example.repository.user.UserRepository;
+import org.example.repository.user.UserRepositoryMySQL;
+import org.example.service.book.BookService;
+import org.example.service.book.BookServiceImpl;
+import org.example.service.user.AuthenticationService;
+import org.example.service.user.AuthenticationServiceMySQL;
+import org.example.view.LoginView;
 
+import java.sql.Connection;
 import java.time.LocalDate;
-public class Main {
 
+import static javafx.application.Application.launch;
+import static org.example.database.Constants.Schemas.PRODUCTION;
+
+public class Main extends Application {
     public static void main(String[] args){
-        System.out.println("Hello world!");
+        launch(args);
+    }
 
-        BookRepository bookRepository = new BookRepositoryCacheDecorator(
-                new BookRepositoryMySQL(DatabaseConnectionFactory.getConnectionWrapper(true).getConnection()),
-                new Cache<>()
-        );
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        final Connection connection = new JDBConnectionWrapper(PRODUCTION).getConnection();
 
-        BookService bookService = new BookServiceImpl(bookRepository);
+        final RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
+        final UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
 
-        Book book = new BookBuilder()
-                .setAuthor("Cezar Petrescu")
-                .setTitle("Fram Ursul Polar")
-                .setPublishedDate(LocalDate.of(2010, 6, 2))
-                .build();
-        Book book1 = new AudioBookBuilder()
-                .setAuthor("Pop Cornel")
-                .setTitle("Comoara din sertaru gol")
-                .setRunTime(120)
-                .setPublishedDate(LocalDate.of(2023, 12, 15))
-                .build();
+        final AuthenticationService authenticationService = new AuthenticationServiceMySQL(userRepository,
+                rightsRolesRepository);
 
-        //bookService.save(book);
+        final LoginView loginView = new LoginView(primaryStage);
 
-        System.out.println(bookService.findAll());
+        final UserValidator userValidator = new UserValidator(userRepository);
 
-        System.out.println(bookService.findAll());
-        System.out.println(bookService.getAgeOfBook(22L));
+        new LoginController(loginView, authenticationService, userValidator);
     }
 }

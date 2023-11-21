@@ -1,6 +1,4 @@
-package org.example.repository;
-
-import org.example.model.Book;
+package org.example.repository.book;
 
 public abstract class BookRepositoryDecorator implements BookRepository {
     protected BookRepository decoratedRepository;
