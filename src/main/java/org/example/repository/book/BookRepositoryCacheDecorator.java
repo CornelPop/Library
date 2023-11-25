@@ -36,7 +36,6 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
         }
 
         Optional<Book> book = decoratedRepository.findById(id);
- //tema il adaugam in cache cu ifPresent
         return book;
     }
 
@@ -52,4 +51,10 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
         cache.invalidateCache();
         decoratedRepository.removeAll();
     }
+
+    @Override
+    public boolean updateStock(Book book, int newStock) {
+        return false;
+    }
+
 }

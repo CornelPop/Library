@@ -78,7 +78,7 @@ public class BookRepositoryMySQL implements BookRepository{
 
     @Override
     public boolean save(Book book) {
-        String sql = "INSERT INTO book VALUES(null, ?, ?, ?);";
+        String sql = "INSERT INTO book VALUES(null, ?, ?, ?, ?, ?);";
 
         String newSql = "INSERT INTO book VALUES(null, \'" + book.getAuthor() +"\', \'"+ book.getTitle()+"\', null );";
 
@@ -92,6 +92,8 @@ public class BookRepositoryMySQL implements BookRepository{
             preparedStatement.setString(1, book.getAuthor());
             preparedStatement.setString(2, book.getTitle());
             preparedStatement.setDate(3, java.sql.Date.valueOf(book.getPublishedDate()));
+            preparedStatement.setInt(4, book.getPrice());
+            preparedStatement.setInt(5, book.getStock());
 
             int rowsInserted = preparedStatement.executeUpdate();
 
@@ -116,12 +118,32 @@ public class BookRepositoryMySQL implements BookRepository{
         }
     }
 
+    @Override
+    public boolean updateStock(Book book, int newStock) {
+
+        String updateQuery = "UPDATE book SET stock = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, newStock);
+            preparedStatement.setLong(2, book.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     private Book getBookFromResultSet(ResultSet resultSet) throws SQLException{
         return new BookBuilder()
                 .setId(resultSet.getLong("id"))
                 .setTitle(resultSet.getString("title"))
                 .setAuthor(resultSet.getString("author"))
                 .setPublishedDate(new java.sql.Date(resultSet.getDate("publishedDate").getTime()).toLocalDate())
+                .setPrice(resultSet.getInt("price"))
+                .setStock(resultSet.getInt("stock"))
                 .build();
     }
 }

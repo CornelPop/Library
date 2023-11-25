@@ -59,12 +59,14 @@ public class LoginView {
         gridPane.add(userName, 0, 1);
 
         userTextField = new TextField();
+        userTextField.setText("popc2002@yahoo.com");
         gridPane.add(userTextField, 1, 1);
 
         Label password = new Label("Password");
         gridPane.add(password, 0, 2);
 
         passwordField = new PasswordField();
+        passwordField.setText("Volei2002!");
         gridPane.add(passwordField, 1, 2);
 
         signInButton = new Button("Sign In");
