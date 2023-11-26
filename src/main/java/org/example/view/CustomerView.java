@@ -9,13 +9,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -33,6 +32,7 @@ public class CustomerView {
 
     private CustomerModel customerModel;
     private Button buyButton;
+    private Button refreshButton;
     private TableView<Book> table;
 
     private TextField quantityTextField;
@@ -57,15 +57,17 @@ public class CustomerView {
     }
 
     private void initializeGridPane(GridPane gridPane) {
+        gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
     }
 
     private void initializeSceneTitle(GridPane gridPane) {
-        Text sceneTitle = new Text("Welcome to CUSTOMER page");
+        Text sceneTitle = new Text("CARTURESTI");
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 1, 1);
+        gridPane.setBackground(Background.fill(Color.LIGHTGREEN));
     }
 
     private void initializeFields(GridPane gridPane) {
@@ -73,6 +75,11 @@ public class CustomerView {
         HBox buyButtonHBox = new HBox(10);
         buyButtonHBox.getChildren().add(buyButton);
         gridPane.add(buyButtonHBox, 0, 1);
+
+        refreshButton = new Button("Refresh");
+        HBox refreshButtonHBox = new HBox(10);
+        refreshButtonHBox.getChildren().add(refreshButton);
+        gridPane.add(refreshButtonHBox, 0, 4);
 
         TableColumn<Book, String> idColumn = new TableColumn<>("Id");
         idColumn.setMinWidth(100);
@@ -117,6 +124,10 @@ public class CustomerView {
         buyButton.setOnAction(buyButtonListener);
     }
 
+    public void addRefreshButtonListener(EventHandler<ActionEvent> refreshButtonListener) {
+        refreshButton.setOnAction(refreshButtonListener);
+    }
+
     public ObservableList<Book> getBooks() {
         ObservableList<Book> books = FXCollections.observableArrayList();
 
@@ -127,7 +138,23 @@ public class CustomerView {
         return books;
     }
 
+    public void emptyTableView() {
+        getBooks().clear();
+    }
+
+    public TableView<Book> getTable() {
+        return table;
+    }
+
     public TextField getQuantityTextField() {
         return quantityTextField;
+    }
+
+    public void showErrorBox (String error) {
+        Alert informationAlert = new Alert(Alert.AlertType.ERROR);
+        informationAlert.setTitle("Error");
+        informationAlert.setHeaderText("We encountered an error");
+        informationAlert.setContentText(error);
+        informationAlert.showAndWait();
     }
 }

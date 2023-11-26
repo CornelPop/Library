@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import org.example.model.Book;
@@ -21,14 +22,49 @@ public class CustomerController {
         this.bookService = bookService;
 
         this.customerView.addBuyButtonListener(new buyButtonListener());
+        this.customerView.addRefreshButtonListener(new refreshButtonListener());
     }
 
     private class buyButtonListener implements EventHandler<ActionEvent> {
 
         @Override
         public void handle(javafx.event.ActionEvent event) {
-                bookService.updateStock(customerView.bookSelected(), customerView.bookSelected().getStock() - Integer.parseInt(customerView.getQuantityTextField().getText()));
+            if (customerView.bookSelected() == null)
+            {
+                customerView.showErrorBox("Select the book you want idiot!!");
+            }
+            else
+            {
+                if (isNumeric(customerView.getQuantityTextField().getText()))
+                {
+                    if (customerView.bookSelected().getStock() < Integer.parseInt(customerView.getQuantityTextField().getText()))
+                    {
+                        customerView.showErrorBox("You can not buy more books than there are in the store.");
+                    }
+                    else
+                    {
+                        bookService.updateStock(customerView.bookSelected(), customerView.bookSelected().getStock() - Integer.parseInt(customerView.getQuantityTextField().getText()));
+                    }
+                }
+                else
+                {
+                    customerView.showErrorBox("Enter a valid number idiot!!!");
+                }
+            }
         }
+    }
 
+    private class refreshButtonListener implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(javafx.event.ActionEvent event) {
+            customerView.emptyTableView();
+            customerView.getTable().setItems(customerView.getBooks());
+        }
+    }
+
+    public boolean isNumeric(String string) {
+        String numericRegex = "\\d+";
+        return string.matches(numericRegex);
     }
 }
