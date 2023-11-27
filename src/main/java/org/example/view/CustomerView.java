@@ -32,6 +32,8 @@ public class CustomerView {
 
     private CustomerModel customerModel;
     private Button buyButton;
+
+    private Button logoutButton;
     private Button refreshButton;
     private TableView<Book> table;
 
@@ -81,6 +83,11 @@ public class CustomerView {
         refreshButtonHBox.getChildren().add(refreshButton);
         gridPane.add(refreshButtonHBox, 0, 4);
 
+        logoutButton = new Button("Logout");
+        HBox logoutButtonHBox = new HBox(10);
+        logoutButtonHBox.getChildren().add(logoutButton);
+        gridPane.add(logoutButtonHBox, 1, 4);
+
         TableColumn<Book, String> idColumn = new TableColumn<>("Id");
         idColumn.setMinWidth(100);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("Id"));
@@ -128,6 +135,10 @@ public class CustomerView {
         refreshButton.setOnAction(refreshButtonListener);
     }
 
+    public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
+        logoutButton.setOnAction(logoutButtonListener);
+    }
+
     public ObservableList<Book> getBooks() {
         ObservableList<Book> books = FXCollections.observableArrayList();
 
@@ -157,4 +168,6 @@ public class CustomerView {
         informationAlert.setContentText(error);
         informationAlert.showAndWait();
     }
+
+
 }

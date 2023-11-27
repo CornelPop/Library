@@ -63,7 +63,7 @@ public class LoginController {
                 {
                     System.out.println("merge CUSTOMER");
                     CustomerView customerView = new CustomerView(customerStage, customerModel);
-                    new CustomerController(customerView, customerModel, bookService);
+                    new CustomerController(customerView, customerModel, bookService, authenticationService, customerStage);
                 }
 
                 if (user.getRoles().get(0).getRole().equals(EMPLOYEE))

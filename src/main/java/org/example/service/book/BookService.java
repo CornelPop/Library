@@ -16,4 +16,6 @@ public interface BookService {
 
     boolean updateStock(Book book, int newStock);
 
+    boolean deleteById(Book book, int id);
+
 }

@@ -49,12 +49,9 @@ public class Main extends Application {
 
         final UserValidator userValidator = new UserValidator(userRepository);
 
-
-
         Stage customerStage = new Stage();
         Stage employeeStage= new Stage();
         Stage adminStage = new Stage();
-
 
         final BookRepositoryMySQL bookRepositoryMySQL = new BookRepositoryMySQL(connection);
         final BookServiceImpl bookService = new BookServiceImpl(bookRepositoryMySQL);

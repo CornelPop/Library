@@ -43,4 +43,10 @@ public class BookServiceImpl implements BookService{
     public boolean updateStock(Book book, int newStock) {
         return bookRepository.updateStock(book, newStock);
     }
+
+    @Override
+    public boolean deleteById(Book book, int id)
+    {
+        return bookRepository.deleteById(book, id);
+    }
 }

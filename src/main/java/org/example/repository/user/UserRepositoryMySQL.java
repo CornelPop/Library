@@ -28,25 +28,30 @@ public class UserRepositoryMySQL implements UserRepository {
     @Override
     public User findByUsernameAndPassword(String username, String password) {
         try {
-            Statement statement = connection.createStatement();
+            String fetchUserSql = "SELECT * FROM `" + USER + "` WHERE `username`=? AND `password`=?";
 
-            String fetchUserSql =
-                    "Select * from `" + USER + "` where `username`=\'" + username + "\' and `password`=\'" + password + "\'";
-            ResultSet userResultSet = statement.executeQuery(fetchUserSql);
-            userResultSet.next();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(fetchUserSql)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
 
-            User user = new UserBuilder()
-                    .setUsername(userResultSet.getString("username"))
-                    .setPassword(userResultSet.getString("password"))
-                    .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
-                    .build();
+                try (ResultSet userResultSet = preparedStatement.executeQuery()) {
+                    if (userResultSet.next()) {
+                        User user = new UserBuilder()
+                                .setUsername(userResultSet.getString("username"))
+                                .setPassword(userResultSet.getString("password"))
+                                .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
+                                .build();
 
-            return user;
+                        return user;
+                    }
+                }
+            }
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
         return null;
     }
+
 
     @Override
     public boolean save(User user) {

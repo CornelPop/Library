@@ -135,6 +135,23 @@ public class BookRepositoryMySQL implements BookRepository{
         }
     }
 
+    @Override
+    public boolean deleteById(Book book, int id) {
+
+        String deleteQuery = "DELETE FROM book WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+            preparedStatement.setLong(1, book.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 
     private Book getBookFromResultSet(ResultSet resultSet) throws SQLException{
         return new BookBuilder()

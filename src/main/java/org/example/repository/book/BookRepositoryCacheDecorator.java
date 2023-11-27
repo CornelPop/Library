@@ -57,4 +57,9 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
         return false;
     }
 
+    @Override
+    public boolean deleteById(Book book, int id) {
+        return false;
+    }
+
 }
