@@ -71,6 +71,26 @@ public class SQLTableCreationFactory {
                     "    REFERENCES role (id)" +
                     "    ON DELETE CASCADE" +
                     "    ON UPDATE CASCADE);";
+            case BILL -> "CREATE TABLE IF NOT EXISTS bill (\n" +
+                    "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
+                    "  book_id BIGINT,\n" +
+                    "  customer_id INT,\n" +
+                    "  quantity INT NOT NULL,\n" +
+                    "  amountPaid INT NOT NULL,\n" +
+                    "  PRIMARY KEY(id),\n" +
+                    "  INDEX book_id_idx (book_id ASC),\n" +
+                    "  INDEX customer_id_idx (customer_id ASC),\n" +
+                    "  CONSTRAINT book_id_fk\n" +
+                    "    FOREIGN KEY (book_id)\n" +
+                    "    REFERENCES book (id)\n" +
+                    "    ON DELETE CASCADE\n" +
+                    "    ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT customer_id_fk\n" +
+                    "    FOREIGN KEY (customer_id)\n" +
+                    "    REFERENCES user (id)\n" +
+                    "    ON DELETE CASCADE\n" +
+                    "    ON UPDATE CASCADE\n" +
+                    ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;\n";
             default -> "";
         };
     }

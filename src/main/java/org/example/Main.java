@@ -2,11 +2,13 @@ package org.example;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.example.controller.EmployeeController;
 import org.example.controller.LoginController;
 import org.example.database.DatabaseConnectionFactory;
 import org.example.database.JDBConnectionWrapper;
 import org.example.model.Book;
 import org.example.model.CustomerModel;
+import org.example.model.EmployeeModel;
 import org.example.model.builder.BookBuilder;
 import org.example.model.validator.UserValidator;
 import org.example.repository.book.BookRepository;
@@ -22,6 +24,7 @@ import org.example.service.book.BookServiceImpl;
 import org.example.service.user.AuthenticationService;
 import org.example.service.user.AuthenticationServiceMySQL;
 import org.example.view.CustomerView;
+import org.example.view.EmployeeView;
 import org.example.view.LoginView;
 
 import java.sql.Connection;
@@ -61,8 +64,8 @@ public class Main extends Application {
                 .setPublishedDate(LocalDate.of(2002, 12, 15))
                 .setPrice(30)
                 .setStock(50)
-                .build());
-        bookRepositoryMySQL.save(new BookBuilder().setTitle("Comoara din sertarul gol")
+                .build());*/
+        /*bookRepositoryMySQL.save(new BookBuilder().setTitle("Comoara din sertarul gol")
                 .setAuthor("Razvan Pop")
                 .setPublishedDate(LocalDate.of(2007, 5, 19))
                 .setPrice(50)
@@ -71,8 +74,11 @@ public class Main extends Application {
 
         //bookRepositoryMySQL.removeAll();
 
-        CustomerModel customerModel = new CustomerModel(bookService);
 
-        new LoginController(loginView, authenticationService, userValidator, customerStage, employeeStage, adminStage, customerModel, bookService);
+
+        CustomerModel customerModel = new CustomerModel(bookService);
+        EmployeeModel employeeModel = new EmployeeModel(bookService);
+
+        new LoginController(loginView, authenticationService, userValidator, customerStage, employeeStage, adminStage, customerModel, bookService, employeeModel);
     }
 }

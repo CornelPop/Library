@@ -17,7 +17,7 @@ public class AdminView {
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
 
-        Scene scene = new Scene(gridPane, 720, 480);
+        Scene scene = new Scene(gridPane, 900, 600);
         adminStage.setScene(scene);
 
         initializeSceneTitle(gridPane);
@@ -35,7 +35,7 @@ public class AdminView {
     }
 
     private void initializeSceneTitle(GridPane gridPane){
-        Text sceneTitle = new Text("Welcome to CUSTOMER page");
+        Text sceneTitle = new Text("Welcome to ADMIN page");
         sceneTitle.setFont(Font.font("Tahome", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 2, 1);
     }

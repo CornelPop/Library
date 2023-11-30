@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.model.CustomerModel;
+import org.example.model.EmployeeModel;
 import org.example.model.User;
 import org.example.model.validator.UserValidator;
 import org.example.service.book.BookServiceImpl;
@@ -21,6 +22,7 @@ import static org.example.database.Constants.Roles.*;
 
 public class LoginController {
 
+    private EmployeeModel employeeModel;
     private CustomerModel customerModel;
     private Stage customerStage;
     private Stage employeeStage;
@@ -31,7 +33,7 @@ public class LoginController {
     private final UserValidator userValidator;
 
 
-    public LoginController(LoginView loginView, AuthenticationService authenticationService, UserValidator userValidator, Stage customerStage, Stage employeeStage, Stage adminStage, CustomerModel customerModel, BookServiceImpl bookService) {
+    public LoginController(LoginView loginView, AuthenticationService authenticationService, UserValidator userValidator, Stage customerStage, Stage employeeStage, Stage adminStage, CustomerModel customerModel, BookServiceImpl bookService, EmployeeModel employeeModel) {
         this.loginView = loginView;
         this.authenticationService = authenticationService;
         this.userValidator = userValidator;
@@ -40,6 +42,7 @@ public class LoginController {
         this.adminStage = adminStage;
 
         this.customerModel = customerModel;
+        this.employeeModel = employeeModel;
 
         this.bookService = bookService;
 
@@ -69,7 +72,8 @@ public class LoginController {
                 if (user.getRoles().get(0).getRole().equals(EMPLOYEE))
                 {
                     System.out.println("merge EMPLOYEE");
-                    new EmployeeView(employeeStage);
+                    EmployeeView employeeView = new EmployeeView(employeeStage, employeeModel);
+                    new EmployeeController(employeeView, employeeModel, bookService, authenticationService);
                 }
 
                 if (user.getRoles().get(0).getRole().equals(ADMINISTRATOR))

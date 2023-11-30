@@ -1,7 +1,9 @@
 package org.example.repository.book;
 
+import org.example.model.Bill;
 import org.example.model.Book;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +49,20 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     }
 
     @Override
+    public boolean saveBill(Bill bill) {
+        cache.invalidateCache();
+        return decoratedRepository.saveBill(bill);
+    }
+
+    @Override
     public void removeAll() {
         cache.invalidateCache();
         decoratedRepository.removeAll();
+    }
+
+    @Override
+    public boolean updateBillBookId(Long billId, Long newBookId) {
+        return false;
     }
 
     @Override
@@ -58,8 +71,18 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     }
 
     @Override
+    public boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock) {
+        return false;
+    }
+
+    @Override
     public boolean deleteById(Book book, int id) {
         return false;
+    }
+
+    @Override
+    public List<Bill> findAllBills() {
+        return null;
     }
 
 }

@@ -1,14 +1,17 @@
 package org.example.repository.book;
 
+import org.example.model.Bill;
 import org.example.model.Book;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookRepositoryMock implements BookRepository{
     private List<Book> books;
+    private List<Bill> bills;
     private final Connection connection;
 
     public BookRepositoryMock(Connection connection){
@@ -39,8 +42,18 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
+    public boolean saveBill(Bill bill) {
+        return bills.add(bill);
+    }
+
+    @Override
     public void removeAll() {
         books.clear();
+    }
+
+    @Override
+    public boolean updateBillBookId(Long billId, Long newBookId) {
+        return false;
     }
 
     @Override
@@ -49,7 +62,15 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
+    public boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock){return false;};
+
+    @Override
     public boolean deleteById(Book book, int id) {
         return false;
+    }
+
+    @Override
+    public List<Bill> findAllBills() {
+        return null;
     }
 }

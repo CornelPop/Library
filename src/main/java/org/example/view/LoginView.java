@@ -32,7 +32,7 @@ public class LoginView {
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
 
-        Scene scene = new Scene(gridPane, 720, 480);
+        Scene scene = new Scene(gridPane, 900, 600);
         primaryStage.setScene(scene);
 
         initializeSceneTitle(gridPane);
@@ -61,14 +61,14 @@ public class LoginView {
         gridPane.add(userName, 0, 1);
 
         userTextField = new TextField();
-        userTextField.setText("popc2002@yahoo.com");
+        userTextField.setText("employee@yahoo.com");
         gridPane.add(userTextField, 1, 1);
 
         Label password = new Label("Password");
         gridPane.add(password, 0, 2);
 
         passwordField = new PasswordField();
-        passwordField.setText("Volei2002!");
+        passwordField.setText("Employee2002!");
         gridPane.add(passwordField, 1, 2);
 
         signInButton = new Button("Sign In");

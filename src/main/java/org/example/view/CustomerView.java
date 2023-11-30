@@ -20,6 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.example.controller.CustomerController;
+import org.example.model.Bill;
 import org.example.model.Book;
 import org.example.model.CustomerModel;
 import org.example.model.builder.BookBuilder;
@@ -48,7 +49,7 @@ public class CustomerView {
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
 
-        Scene scene = new Scene(gridPane, 720, 480);
+        Scene scene = new Scene(gridPane, 900, 600);
         customerStage.setScene(scene);
 
         initializeSceneTitle(gridPane);

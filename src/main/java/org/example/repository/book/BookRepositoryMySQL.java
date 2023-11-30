@@ -1,9 +1,12 @@
 package org.example.repository.book;
 
+import org.example.model.Bill;
 import org.example.model.Book;
+import org.example.model.builder.BillBuilder;
 import org.example.model.builder.BookBuilder;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,26 @@ public class BookRepositoryMySQL implements BookRepository{
         }
 
         return books;
+    }
+
+    public List<Bill> findAllBills() {
+        String sql = "SELECT * FROM bill;";
+
+        List<Bill> bills = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()){
+                bills.add(getBillFromResultSet(resultSet));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bills;
     }
 
     @Override
@@ -107,6 +130,27 @@ public class BookRepositoryMySQL implements BookRepository{
     }
 
     @Override
+    public boolean saveBill(Bill bill) {
+        String sql = "INSERT INTO bill (book_id, customer_id, quantity, amountPaid) VALUES (?, null, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, bill.getBookId());
+            preparedStatement.setInt(2, bill.getQuantity());
+            preparedStatement.setInt(3, bill.getAmountPaid());
+
+            int rowInserted = preparedStatement.executeUpdate();
+
+
+            return rowInserted > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
     public void removeAll() {
         String sql = "DELETE FROM book WHERE id >= 0;";
 
@@ -136,6 +180,44 @@ public class BookRepositoryMySQL implements BookRepository{
     }
 
     @Override
+    public boolean updateBillBookId(Long billId, Long newBookId) {
+        String updateQuery = "UPDATE bill SET book_id = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setLong(1, newBookId);
+            preparedStatement.setLong(2, billId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
+    public boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock) {
+        String updateQuery = "UPDATE book SET author = ?, title = ?, publishedDate = ?, price = ?, stock = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setString(1, newAuthor);
+            preparedStatement.setString(2, newTitle);
+            preparedStatement.setObject(3, newPublishedDate);
+            preparedStatement.setInt(4, newPrice);
+            preparedStatement.setInt(5, newStock);
+            preparedStatement.setLong(6, book.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
     public boolean deleteById(Book book, int id) {
 
         String deleteQuery = "DELETE FROM book WHERE id = ?";
@@ -161,6 +243,17 @@ public class BookRepositoryMySQL implements BookRepository{
                 .setPublishedDate(new java.sql.Date(resultSet.getDate("publishedDate").getTime()).toLocalDate())
                 .setPrice(resultSet.getInt("price"))
                 .setStock(resultSet.getInt("stock"))
+                .build();
+    }
+
+    private Bill getBillFromResultSet(ResultSet resultSet) throws SQLException{
+        return new BillBuilder()
+                .setId(resultSet.getLong("id"))
+                .setBookId(resultSet.getLong("book_id"))
+                .setCustomerId(resultSet.getInt("customer_id"))
+                //.setPublishedDate(new java.sql.Date(resultSet.getDate("publishedDate").getTime()).toLocalDate())
+                .setQuantity(resultSet.getInt("quantity"))
+                .setAmountPaid(resultSet.getInt("amountPaid"))
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package org.example.service.book;
 
+import org.example.model.Bill;
 import org.example.model.Book;
 import org.example.repository.book.BookRepository;
 
@@ -31,6 +32,11 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public boolean saveBill(Bill bill){
+        return bookRepository.saveBill(bill);
+    }
+
+    @Override
     public int getAgeOfBook(Long id) {
         Book book = this.findById(id);
 
@@ -45,8 +51,22 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock) {
+        return bookRepository.updateBook(book, newAuthor, newTitle, newPublishedDate, newPrice, newStock);
+    }
+
+    @Override
+    public boolean updateBillBookId(Long billId, Long newBookId) {
+        return bookRepository.updateBillBookId(billId, newBookId);
+    }
+
+    @Override
     public boolean deleteById(Book book, int id)
     {
         return bookRepository.deleteById(book, id);
+    }
+
+    public List<Bill> findAllBills() {
+        return bookRepository.findAllBills();
     }
 }

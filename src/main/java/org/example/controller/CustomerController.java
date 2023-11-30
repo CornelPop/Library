@@ -4,8 +4,10 @@ import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import org.example.model.Bill;
 import org.example.model.Book;
 import org.example.model.CustomerModel;
+import org.example.model.builder.BillBuilder;
 import org.example.service.book.BookServiceImpl;
 import org.example.service.user.AuthenticationService;
 import org.example.view.CustomerView;
@@ -52,6 +54,11 @@ public class CustomerController {
                     else
                     {
                         bookService.updateStock(customerView.bookSelected(), customerView.bookSelected().getStock() - Integer.parseInt(customerView.getQuantityTextField().getText()));
+                        Bill bill = new BillBuilder().setQuantity(Integer.parseInt(customerView.getQuantityTextField().getText()))
+                                .setAmountPaid(Integer.parseInt(customerView.getQuantityTextField().getText()) * customerView.bookSelected().getPrice())
+                                .setBookId(customerView.bookSelected().getId())
+                                .build();
+                        bookService.saveBill(bill);
                         if (customerView.bookSelected().getStock() - Integer.parseInt(customerView.getQuantityTextField().getText()) == 0)
                         {
                             bookService.deleteById(customerView.bookSelected(), customerView.bookSelected().getId().intValue());
