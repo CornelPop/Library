@@ -6,6 +6,7 @@ import org.example.controller.EmployeeController;
 import org.example.controller.LoginController;
 import org.example.database.DatabaseConnectionFactory;
 import org.example.database.JDBConnectionWrapper;
+import org.example.model.AdminModel;
 import org.example.model.Book;
 import org.example.model.CustomerModel;
 import org.example.model.EmployeeModel;
@@ -78,7 +79,8 @@ public class Main extends Application {
 
         CustomerModel customerModel = new CustomerModel(bookService);
         EmployeeModel employeeModel = new EmployeeModel(bookService);
+        AdminModel adminModel = new AdminModel(bookService);
 
-        new LoginController(loginView, authenticationService, userValidator, customerStage, employeeStage, adminStage, customerModel, bookService, employeeModel);
+        new LoginController(loginView, authenticationService, userValidator, customerStage, employeeStage, adminStage, customerModel, bookService, employeeModel, adminModel);
     }
 }

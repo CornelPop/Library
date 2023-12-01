@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.model.AdminModel;
 import org.example.model.CustomerModel;
 import org.example.model.EmployeeModel;
 import org.example.model.User;
@@ -24,6 +25,7 @@ public class LoginController {
 
     private EmployeeModel employeeModel;
     private CustomerModel customerModel;
+    private AdminModel adminModel;
     private Stage customerStage;
     private Stage employeeStage;
     private Stage adminStage;
@@ -33,7 +35,7 @@ public class LoginController {
     private final UserValidator userValidator;
 
 
-    public LoginController(LoginView loginView, AuthenticationService authenticationService, UserValidator userValidator, Stage customerStage, Stage employeeStage, Stage adminStage, CustomerModel customerModel, BookServiceImpl bookService, EmployeeModel employeeModel) {
+    public LoginController(LoginView loginView, AuthenticationService authenticationService, UserValidator userValidator, Stage customerStage, Stage employeeStage, Stage adminStage, CustomerModel customerModel, BookServiceImpl bookService, EmployeeModel employeeModel, AdminModel adminModel) {
         this.loginView = loginView;
         this.authenticationService = authenticationService;
         this.userValidator = userValidator;
@@ -43,6 +45,7 @@ public class LoginController {
 
         this.customerModel = customerModel;
         this.employeeModel = employeeModel;
+        this.adminModel = adminModel;
 
         this.bookService = bookService;
 
@@ -79,7 +82,8 @@ public class LoginController {
                 if (user.getRoles().get(0).getRole().equals(ADMINISTRATOR))
                 {
                     System.out.println("merge ADMINISTRATOR");
-                    new AdminView(adminStage);
+                    AdminView adminView = new AdminView(adminStage, adminModel);
+                    new AdminController(authenticationService, adminModel, adminView, bookService, adminStage, userValidator);
                 }
             }
         }

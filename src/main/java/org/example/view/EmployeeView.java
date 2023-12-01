@@ -28,7 +28,6 @@ public class EmployeeView {
 
     private EmployeeModel employeeModel;
     private Button addSellToEmployeeButton;
-    private ComboBox employeeComboBox;
     private TableView<Book> table;
     private TableView<Bill> table2;
     private TextField titleTextField;
@@ -111,7 +110,6 @@ public class EmployeeView {
         BorderPane panel3 = new BorderPane();
         panel3.setStyle("-fx-background-color: lightgreen;");
         panel3.setBorder(new Border(new BorderStroke(Color.DARKGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2) )));
-
         gridPane.add(panel1, 0, 0);
         gridPane.add(panel2, 1, 0);
         gridPane.add(panel3, 2, 0);
@@ -147,13 +145,13 @@ public class EmployeeView {
         idColumn2.setMinWidth(100);
         idColumn2.setCellValueFactory(new PropertyValueFactory<>("Id"));
 
-        TableColumn<Bill, String> bookIdColumn = new TableColumn<>("BookId");
+        TableColumn<Bill, String> bookIdColumn = new TableColumn<>("Book Id");
         bookIdColumn.setMinWidth(100);
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("book_id"));
 
-        TableColumn<Bill, String> customerId = new TableColumn<>("CustomerId");
-        customerId.setMinWidth(100);
-        customerId.setCellValueFactory(new PropertyValueFactory<>("customer_id"));
+        TableColumn<Bill, String> customerIdColumn = new TableColumn<>("Customer Id");
+        customerIdColumn.setMinWidth(100);
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customer_id"));
 
         TableColumn<Bill, LocalDate> quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setMinWidth(100);
@@ -177,7 +175,7 @@ public class EmployeeView {
         table.getColumns().addAll(idColumn, titleColumn, authorColumn, dateColumn, priceColumn, stockColumn);
 
         table2 = new TableView<>();
-        table2.getColumns().addAll(idColumn2, bookIdColumn, customerId, quantityColumn, amountPaidColumn);
+        table2.getColumns().addAll(idColumn2, bookIdColumn, customerIdColumn, quantityColumn, amountPaidColumn);
 
         table.setMaxHeight(330);
         table2.setMaxHeight(330);
@@ -200,8 +198,12 @@ public class EmployeeView {
 
         List<Bill> allBills = employeeModel.getBills();
 
-        bills.addAll(allBills);
+        for (Bill bill : allBills) {
+            bill.setCustomer_id(0);
+            bills.add(bill);
+        }
 
+        //bills.addAll(allBills);
         return bills;
     }
 
@@ -244,7 +246,7 @@ public class EmployeeView {
         panel3.setCenter(elementsContainer3);
     }
 
-    private void initializePanel1(BorderPane panel1, Button showBooksPanel, Button showBills, Button refreshButton, Button reportOfAllBooksButton)
+    private void initializePanel1(BorderPane panel1, Button showBooksButton, Button showBills, Button refreshButton, Button reportOfAllBooksButton)
     {
         showBooksButton.setPrefSize(130, 40);
         showBillsButton.setPrefSize(130, 40);
@@ -254,7 +256,7 @@ public class EmployeeView {
         VBox elementsContainer1 = new VBox();
         elementsContainer1.setSpacing(10);
         elementsContainer1.setPadding(new Insets(5, 5, 5, 5));
-        elementsContainer1.getChildren().addAll(showBooksPanel, showBills, refreshButton, reportOfAllBooksButton);
+        elementsContainer1.getChildren().addAll(showBooksButton, showBills, refreshButton, reportOfAllBooksButton);
         elementsContainer1.setAlignment(Pos.CENTER);
 
         panel1.setCenter(elementsContainer1);

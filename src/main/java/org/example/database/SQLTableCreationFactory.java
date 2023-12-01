@@ -73,8 +73,8 @@ public class SQLTableCreationFactory {
                     "    ON UPDATE CASCADE);";
             case BILL -> "CREATE TABLE IF NOT EXISTS bill (\n" +
                     "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
-                    "  book_id BIGINT,\n" +
-                    "  customer_id INT,\n" +
+                    "  book_id BIGINT NOT NULL,\n" +
+                    "  customer_id INT NOT NULL,\n" +
                     "  quantity INT NOT NULL,\n" +
                     "  amountPaid INT NOT NULL,\n" +
                     "  PRIMARY KEY(id),\n" +
@@ -91,6 +91,7 @@ public class SQLTableCreationFactory {
                     "    ON DELETE CASCADE\n" +
                     "    ON UPDATE CASCADE\n" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;\n";
+
             default -> "";
         };
     }

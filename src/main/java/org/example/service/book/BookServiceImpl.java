@@ -2,6 +2,7 @@ package org.example.service.book;
 
 import org.example.model.Bill;
 import org.example.model.Book;
+import org.example.model.User;
 import org.example.repository.book.BookRepository;
 
 import java.time.LocalDate;
@@ -66,7 +67,20 @@ public class BookServiceImpl implements BookService{
         return bookRepository.deleteById(book, id);
     }
 
+    @Override
+    public boolean deleteEmployeeById(User user, Long id)
+    {
+        return bookRepository.deleteEmployeeById(user, id);
+    }
+
+    @Override
+    public boolean updateEmployee(User user, String username, String password){
+        return bookRepository.updateEmployee(user, username, password);
+    }
     public List<Bill> findAllBills() {
         return bookRepository.findAllBills();
+    }
+    public List<User> findAllUsers() {
+        return bookRepository.findAllUsers();
     }
 }

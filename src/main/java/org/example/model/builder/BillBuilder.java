@@ -29,13 +29,13 @@ public class BillBuilder {
 
     public BillBuilder setBookId (Long bookId)
     {
-        bill.setBookId(bookId);
+        bill.setBook_id(bookId);
         return this;
     }
 
     public BillBuilder setCustomerId (int customerId)
     {
-        bill.setCustomerId(customerId);
+        bill.setCustomer_id(customerId);
         return this;
     }
     public Bill build(){

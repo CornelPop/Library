@@ -2,6 +2,7 @@ package org.example.repository.book;
 
 import org.example.model.Bill;
 import org.example.model.Book;
+import org.example.model.User;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -62,6 +63,11 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
+    public boolean updateEmployee(User user, String username, String password) {
+        return false;
+    }
+
+    @Override
     public boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock){return false;};
 
     @Override
@@ -70,7 +76,17 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
+    public boolean deleteEmployeeById(User user, Long id) {
+        return false;
+    }
+
+    @Override
     public List<Bill> findAllBills() {
+        return null;
+    }
+
+    @Override
+    public List<User> findAllUsers() {
         return null;
     }
 }

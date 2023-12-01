@@ -2,6 +2,7 @@ package org.example.repository.book;
 
 import org.example.model.Bill;
 import org.example.model.Book;
+import org.example.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,9 +24,15 @@ public interface BookRepository {
 
     boolean updateStock(Book book, int newStock);
 
+    boolean updateEmployee(User user, String username, String password);
+
     boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock);
 
     boolean deleteById(Book book, int id);
 
+    boolean deleteEmployeeById(User user, Long id);
+
     List<Bill> findAllBills();
+
+    List<User> findAllUsers();
 }

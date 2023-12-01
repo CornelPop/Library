@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.util.Collections;
 
 import static org.example.database.Constants.Roles.CUSTOMER;
+import static org.example.database.Constants.Roles.EMPLOYEE;
 
 public class AuthenticationServiceMySQL implements AuthenticationService {
 
@@ -39,6 +40,22 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
     }
 
     @Override
+    public boolean registerEmployee(String username, String password) {
+        String encodedPassword = hashPassword(password);
+        //Criptare  messaj -> dasjdaskdasjdasjk -> messaj
+        //Hashing parolasimpla2023! -> ajdsahduyadgasdashfaj8h8hbh
+        Role customerRole = rightsRolesRepository.findRoleByTitle(EMPLOYEE);
+
+        User user = new UserBuilder()
+                .setUsername(username)
+                .setPassword(encodedPassword)
+                .setRoles(Collections.singletonList(customerRole))
+                .build();
+
+        return userRepository.save(user);
+    }
+
+    @Override
     public User login(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, hashPassword(password));
     }
@@ -48,7 +65,7 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
         return false;
     }
 
-    private String hashPassword(String password) {
+    public String hashPassword(String password) {
         try {
             // Sercured Hash Algorithm - 256
             // 1 byte = 8 biți

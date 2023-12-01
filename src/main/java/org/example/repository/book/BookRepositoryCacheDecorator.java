@@ -2,6 +2,7 @@ package org.example.repository.book;
 
 import org.example.model.Bill;
 import org.example.model.Book;
+import org.example.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -71,6 +72,11 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     }
 
     @Override
+    public boolean updateEmployee(User user, String username, String password) {
+        return false;
+    }
+
+    @Override
     public boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock) {
         return false;
     }
@@ -81,7 +87,17 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     }
 
     @Override
+    public boolean deleteEmployeeById(User user, Long id) {
+        return false;
+    }
+
+    @Override
     public List<Bill> findAllBills() {
+        return null;
+    }
+
+    @Override
+    public List<User> findAllUsers() {
         return null;
     }
 

@@ -2,6 +2,7 @@ package org.example.controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import org.example.model.Bill;
 import org.example.model.Book;
 import org.example.model.CustomerModel;
 import org.example.model.EmployeeModel;

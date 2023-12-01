@@ -2,6 +2,7 @@ package org.example.service.book;
 
 import org.example.model.Bill;
 import org.example.model.Book;
+import org.example.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 public interface BookService {
 
     List<Book> findAll();
+
+    List<User> findAllUsers();
 
     Book findById(Long id);
 
@@ -22,7 +25,13 @@ public interface BookService {
 
     boolean updateBook(Book book, String newAuthor, String newTitle, LocalDate newPublishedDate, int newPrice, int newStock);
 
+    boolean updateEmployee(User user, String username, String password);
+
     boolean updateBillBookId(Long billId, Long newBookId);
+
     boolean deleteById(Book book, int id);
+
+    boolean deleteEmployeeById(User user, Long id);
+
 
 }
