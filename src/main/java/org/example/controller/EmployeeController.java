@@ -1,17 +1,16 @@
 package org.example.controller;
 
+import com.itextpdf.text.DocumentException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import org.example.model.Bill;
-import org.example.model.Book;
-import org.example.model.CustomerModel;
-import org.example.model.EmployeeModel;
+import org.example.model.*;
 import org.example.model.builder.BookBuilder;
 import org.example.service.book.BookServiceImpl;
 import org.example.service.user.AuthenticationService;
-import org.example.view.CustomerView;
 import org.example.view.EmployeeView;
+import org.example.view.GeneratePdf;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -21,12 +20,16 @@ public class EmployeeController {
     private EmployeeModel employeeModel;
     private EmployeeView employeeView;
     private BookServiceImpl bookService;
+    private GeneratePdf generatePdf;
+    private User user;
 
-    public EmployeeController(EmployeeView employeeView, EmployeeModel employeeModel, BookServiceImpl bookService, AuthenticationService authenticationService) {
+    public EmployeeController(EmployeeView employeeView, EmployeeModel employeeModel, BookServiceImpl bookService, AuthenticationService authenticationService, User user) {
         this.authenticationService = authenticationService;
         this.employeeModel = employeeModel;
         this.employeeView = employeeView;
         this.bookService = bookService;
+        this.user = user;
+        generatePdf = new GeneratePdf(bookService);
 
         this.employeeView.addRefreshButtonListener(new refreshButtonListener());
         this.employeeView.addShowBooksButtonListener(new showBooksButtonListener());
@@ -34,6 +37,8 @@ public class EmployeeController {
         this.employeeView.addDeleteBookButtonListener(new deleteBookButtonListener());
         this.employeeView.addUpdateBookButtonListener(new updateBookButtonListener());
         this.employeeView.addShowBillsButtonListener(new showBillsButtonListener());
+        this.employeeView.addReportOfAllBooksButtonListener(new reportOfAllBooksButtonListener());
+        this.employeeView.addToInventoryButtonListener(new addToInventoryButtonListener());
     }
 
     private class showBooksButtonListener implements EventHandler<ActionEvent> {
@@ -49,6 +54,32 @@ public class EmployeeController {
         public void handle(javafx.event.ActionEvent event) {
             employeeView.getTable2().setItems(employeeView.getBills());
         }
+    }
+
+    private class reportOfAllBooksButtonListener implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(javafx.event.ActionEvent event) {
+            try {
+                Long id = (long) bookService.getUserIdByUsername(user.getUsername());
+                generatePdf.createPdfForOneEmployee(bookService.findAllBillsOfAnEmployee(id));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (DocumentException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    private class addToInventoryButtonListener implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(javafx.event.ActionEvent event) {
+            Long id = (long) bookService.getUserIdByUsername(user.getUsername());
+            bookService.updateBillCustomerId(employeeView.getTable2().getSelectionModel().getSelectedItem().getId(), id);
+        }
+
     }
     private class refreshButtonListener implements EventHandler<ActionEvent> {
 

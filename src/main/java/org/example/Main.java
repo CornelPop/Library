@@ -6,10 +6,7 @@ import org.example.controller.EmployeeController;
 import org.example.controller.LoginController;
 import org.example.database.DatabaseConnectionFactory;
 import org.example.database.JDBConnectionWrapper;
-import org.example.model.AdminModel;
-import org.example.model.Book;
-import org.example.model.CustomerModel;
-import org.example.model.EmployeeModel;
+import org.example.model.*;
 import org.example.model.builder.BookBuilder;
 import org.example.model.validator.UserValidator;
 import org.example.repository.book.BookRepository;
@@ -26,6 +23,7 @@ import org.example.service.user.AuthenticationService;
 import org.example.service.user.AuthenticationServiceMySQL;
 import org.example.view.CustomerView;
 import org.example.view.EmployeeView;
+import org.example.view.GeneratePdf;
 import org.example.view.LoginView;
 
 import java.sql.Connection;
@@ -81,6 +79,10 @@ public class Main extends Application {
         EmployeeModel employeeModel = new EmployeeModel(bookService);
         AdminModel adminModel = new AdminModel(bookService);
 
-        new LoginController(loginView, authenticationService, userValidator, customerStage, employeeStage, adminStage, customerModel, bookService, employeeModel, adminModel);
+        User user = new User();
+
+        GeneratePdf generatePdf = new GeneratePdf(bookService);
+
+        new LoginController(loginView, authenticationService, userValidator, customerStage, employeeStage, adminStage, customerModel, bookService, employeeModel, adminModel, user);
     }
 }

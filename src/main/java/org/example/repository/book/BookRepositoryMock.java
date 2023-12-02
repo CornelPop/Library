@@ -58,6 +58,21 @@ public class BookRepositoryMock implements BookRepository{
     }
 
     @Override
+    public int getUserIdByUsername(String username) {
+        return 0;
+    }
+
+    @Override
+    public List<Bill> findAllBillsOfAnEmployee(Long customer_id) {
+        return null;
+    }
+
+    @Override
+    public boolean updateBillCustomerId(Long billId, Long newCustomerId) {
+        return false;
+    }
+
+    @Override
     public boolean updateStock(Book book, int newStock) {
         return false;
     }

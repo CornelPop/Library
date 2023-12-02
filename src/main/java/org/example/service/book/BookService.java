@@ -29,6 +29,12 @@ public interface BookService {
 
     boolean updateBillBookId(Long billId, Long newBookId);
 
+    boolean updateBillCustomerId(Long billId, Long newCustomerId);
+
+    int getUserIdByUsername(String username);
+
+    List<Bill> findAllBillsOfAnEmployee(Long customer_id);
+
     boolean deleteById(Book book, int id);
 
     boolean deleteEmployeeById(User user, Long id);

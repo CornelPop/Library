@@ -57,8 +57,23 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public int getUserIdByUsername(String username){
+        return bookRepository.getUserIdByUsername(username);
+    }
+
+    @Override
+    public List<Bill> findAllBillsOfAnEmployee(Long employee_id){
+        return bookRepository.findAllBillsOfAnEmployee(employee_id);
+    }
+
+    @Override
     public boolean updateBillBookId(Long billId, Long newBookId) {
         return bookRepository.updateBillBookId(billId, newBookId);
+    }
+
+    @Override
+    public boolean updateBillCustomerId(Long billId, Long newCustomerId) {
+        return bookRepository.updateBillCustomerId(billId, newCustomerId);
     }
 
     @Override

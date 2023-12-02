@@ -36,8 +36,9 @@ public class EmployeeView {
     private TextField priceTxetField;
     private TextField stockTextField;
     private Label titleLabel = new Label("Title of the book");
+    private Label infoLabel = new Label("Press a bill and add to inventory");
     private Label authorLabel = new Label("Author of the book");
-    private Label publisedDateLabel = new Label("Published Date of the book YYYY, M, D");
+    private Label publisedDateLabel = new Label("Published Date of the book YYYY-M-D");
     private Label stockLabel = new Label("How many books left");
     private Label priceLabel = new Label("Price of the book");
     private Button showBooksButton = new Button("Show books");
@@ -114,7 +115,7 @@ public class EmployeeView {
         gridPane.add(panel2, 1, 0);
         gridPane.add(panel3, 2, 0);
 
-        initializePanel3(panel3, titleTextField, authorTextField, publishedDateTextField, stockTextField, priceTxetField, authorLabel, titleLabel, publisedDateLabel, priceLabel, stockLabel, addBookButton, updateBookButton, deleteBookButton, addToInventory);
+        initializePanel3(panel3, titleTextField, authorTextField, publishedDateTextField, stockTextField, priceTxetField, authorLabel, titleLabel, publisedDateLabel, priceLabel, stockLabel, addBookButton, updateBookButton, deleteBookButton, addToInventory, infoLabel);
         initializePanel1(panel1, showBooksButton, showBillsButton, refreshButton, reportOfAllBooksButton);
 
         TableColumn<Book, String> idColumn = new TableColumn<>("Id");
@@ -210,7 +211,7 @@ public class EmployeeView {
     private void initializePanel3(BorderPane panel3, TextField titleTextField, TextField authorTextField, TextField publishedDateTextField,
                                   TextField priceTxetField, TextField stockTextField, Label authorLabel, Label titleLabel,
                                   Label publishedDateLabel, Label stockLabel, Label priceLabel, Button addBookButton,
-                                  Button updateBookButton, Button deleteBookButton, Button addToInventory)
+                                  Button updateBookButton, Button deleteBookButton, Button addToInventory, Label infoLabel)
     {
         addBookButton.setPrefSize(130, 40);
         updateBookButton.setPrefSize(130, 40);
@@ -239,6 +240,7 @@ public class EmployeeView {
                 updateBookButton,
                 deleteBookButton,
                 container2,
+                infoLabel,
                 addToInventory);
         elementsContainer3.setAlignment(Pos.CENTER);
 
@@ -291,6 +293,14 @@ public class EmployeeView {
 
     public void addUpdateBookButtonListener(EventHandler<ActionEvent> updateBookButtonListener) {
         updateBookButton.setOnAction(updateBookButtonListener);
+    }
+
+    public void addReportOfAllBooksButtonListener(EventHandler<ActionEvent> reportOfAllBooksButtonListener) {
+        reportOfAllBooksButton.setOnAction(reportOfAllBooksButtonListener);
+    }
+
+    public void addToInventoryButtonListener(EventHandler<ActionEvent> addToInventoryButtonListener) {
+        addToInventory.setOnAction(addToInventoryButtonListener);
     }
 
     public TextField getTitleTextField() {

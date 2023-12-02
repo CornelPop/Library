@@ -57,7 +57,10 @@ public class CustomerController {
                         Bill bill = new BillBuilder().setQuantity(Integer.parseInt(customerView.getQuantityTextField().getText()))
                                 .setAmountPaid(Integer.parseInt(customerView.getQuantityTextField().getText()) * customerView.bookSelected().getPrice())
                                 .setBookId(customerView.bookSelected().getId())
-                                .setCustomerId(3)
+                                .setCustomerId(3) //aici am pus 3 ca sa stiu ca e o valoare acceptata, am primit
+                                //eroare daca puneam altcv trebe sa fie un user deja existent, si oricum cu
+                                //contul acesta care e de test nu se poate loga nimeni. in tabela apare 0 pt bill urile
+                                //ne selectate
                                 .build();
                         bookService.saveBill(bill);
                         if (customerView.bookSelected().getStock() - Integer.parseInt(customerView.getQuantityTextField().getText()) == 0)

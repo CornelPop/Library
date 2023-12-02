@@ -42,8 +42,31 @@ public class BookRepositoryMySQL implements BookRepository{
         return books;
     }
 
+    @Override
+    public List<Bill> findAllBillsOfAnEmployee(Long customer_id) {
+        String sql = "SELECT * FROM bill WHERE customer_id = ?;";
+
+        List<Bill> bills = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, customer_id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                bills.add(getBillFromResultSet(resultSet));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bills;
+    }
+
     public List<Bill> findAllBills() {
-        String sql = "SELECT * FROM bill;";
+        String sql = "SELECT * FROM bill WHERE customer_id = 3;";
 
         List<Bill> bills = new ArrayList<>();
 
@@ -82,7 +105,6 @@ public class BookRepositoryMySQL implements BookRepository{
             e.printStackTrace();
         }
 
-        System.out.println(users);
         return users;
     }
 
@@ -200,11 +222,47 @@ public class BookRepositoryMySQL implements BookRepository{
     }
 
     @Override
+    public int getUserIdByUsername(String username) {
+        String sql = "SELECT id FROM user WHERE username = ?";
+        int userId = -1;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    userId = resultSet.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userId;
+    }
+
+    @Override
     public boolean updateBillBookId(Long billId, Long newBookId) {
         String updateQuery = "UPDATE bill SET book_id = ? WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setLong(1, newBookId);
+            preparedStatement.setLong(2, billId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateBillCustomerId(Long billId, Long newCustomerId) {
+        String updateQuery = "UPDATE bill SET customer_id = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setLong(1, newCustomerId);
             preparedStatement.setLong(2, billId);
 
             int rowsAffected = preparedStatement.executeUpdate();

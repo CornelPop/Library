@@ -34,6 +34,8 @@ public class AdminView {
     private TextField usernameTextField;
     private TextField passwordTextField;
     private Label responseLabel = new Label();
+    private Label infoLabel = new Label("Press a customer and generate report");
+
     private Label usernameLabel = new Label("Username of the user");
     private Label passwordLabel = new Label("Password of the user");
     private Button addUserButton = new Button("Add employee");
@@ -131,7 +133,7 @@ public class AdminView {
 
         panel2.setCenter(table);
         initializePanel1(panel1, showUsers, generateReportOfAllUsers, refreshButton);
-        initializePanel3(panel3, usernameTextField, passwordTextField, usernameLabel, passwordLabel, addUserButton, updateUserButton, deleteUserButton, generateReportOfSpecificUser, enablePassCheckBox, responseLabel);
+        initializePanel3(panel3, usernameTextField, passwordTextField, usernameLabel, passwordLabel, addUserButton, updateUserButton, deleteUserButton, generateReportOfSpecificUser, enablePassCheckBox, responseLabel, infoLabel);
 
     }
 
@@ -148,7 +150,7 @@ public class AdminView {
     private void initializePanel3(BorderPane panel3, TextField usernameTextField, TextField passwordTextField,
                                   Label usernameLabel, Label passwordLabel, Button addUserButton,
                                   Button updateUserButton, Button deleteUserButton, Button generateReportOfSpecificUser,
-                                  CheckBox enablePassCheckBox, Label responseLabel){
+                                  CheckBox enablePassCheckBox, Label responseLabel, Label infoLabel){
 
         addUserButton.setPrefSize(130,40);
         updateUserButton.setPrefSize(130,40);
@@ -175,6 +177,7 @@ public class AdminView {
                 deleteUserButton,
                 responseLabel,
                 container2,
+                infoLabel,
                 generateReportOfSpecificUser);
 
         elementsContainer3.setAlignment(Pos.CENTER);

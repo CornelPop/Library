@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import com.itextpdf.text.DocumentException;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,8 +11,10 @@ import org.example.service.book.BookServiceImpl;
 import org.example.service.user.AuthenticationService;
 import org.example.service.user.AuthenticationServiceMySQL;
 import org.example.view.AdminView;
+import org.example.view.GeneratePdf;
 
 import javax.swing.event.ChangeListener;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class AdminController {
@@ -22,6 +25,7 @@ public class AdminController {
     private BookServiceImpl bookService;
     private Stage adminStage;
     private UserValidator userValidator;
+    private GeneratePdf generatePdf;
 
     public AdminController(AuthenticationService authenticationService, AdminModel adminModel, AdminView adminView, BookServiceImpl bookService, Stage adminStage, UserValidator userValidator) {
         this.authenticationService = authenticationService;
@@ -30,6 +34,7 @@ public class AdminController {
         this.bookService = bookService;
         this.adminStage = adminStage;
         this.userValidator = userValidator;
+        generatePdf = new GeneratePdf(bookService);
 
         this.adminView.addGenerateReportButtonListener(new generateReportButtonListener());
         this.adminView.addAddUserButtonListener(new addUserButtonListener());
@@ -45,8 +50,13 @@ public class AdminController {
 
         @Override
         public void handle(ActionEvent event) {
-            System.out.println("generate all reports button clicked");
-
+            try {
+                generatePdf.createPdfForAllEmployees(bookService.findAllUsers());
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (DocumentException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -123,7 +133,13 @@ public class AdminController {
 
         @Override
         public void handle(ActionEvent event) {
-            System.out.println("Generate Report button clicked");
+            try {
+                generatePdf.createPdfForOneEmployee(bookService.findAllBillsOfAnEmployee(adminView.getTable().getSelectionModel().getSelectedItem().getId()));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (DocumentException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

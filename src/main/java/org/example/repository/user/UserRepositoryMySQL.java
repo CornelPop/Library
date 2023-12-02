@@ -91,17 +91,20 @@ public class UserRepositoryMySQL implements UserRepository {
     @Override
     public boolean existsByUsername(String email) {
         try {
-            Statement statement = connection.createStatement();
+            String fetchUserSql = "SELECT * FROM " + USER + " WHERE username = ?";
 
-            String fetchUserSql =
-                    "Select * from `" + USER + "` where `username`=\'" + email + "\'";
-            ResultSet userResultSet = statement.executeQuery(fetchUserSql);
-            return userResultSet.next();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(fetchUserSql)) {
+                preparedStatement.setString(1, email);
 
+                try (ResultSet userResultSet = preparedStatement.executeQuery()) {
+                    return userResultSet.next();
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+
     }
 
 }

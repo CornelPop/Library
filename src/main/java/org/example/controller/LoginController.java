@@ -33,15 +33,17 @@ public class LoginController {
     private final LoginView loginView;
     private final AuthenticationService authenticationService;
     private final UserValidator userValidator;
+    private User user;
 
 
-    public LoginController(LoginView loginView, AuthenticationService authenticationService, UserValidator userValidator, Stage customerStage, Stage employeeStage, Stage adminStage, CustomerModel customerModel, BookServiceImpl bookService, EmployeeModel employeeModel, AdminModel adminModel) {
+    public LoginController(LoginView loginView, AuthenticationService authenticationService, UserValidator userValidator, Stage customerStage, Stage employeeStage, Stage adminStage, CustomerModel customerModel, BookServiceImpl bookService, EmployeeModel employeeModel, AdminModel adminModel, User user) {
         this.loginView = loginView;
         this.authenticationService = authenticationService;
         this.userValidator = userValidator;
         this.customerStage = customerStage;
         this.employeeStage = employeeStage;
         this.adminStage = adminStage;
+        this.user = user;
 
         this.customerModel = customerModel;
         this.employeeModel = employeeModel;
@@ -60,7 +62,7 @@ public class LoginController {
             String username = loginView.getUsername();
             String password = loginView.getPassword();
 
-            User user = authenticationService.login(username, password);
+            user = authenticationService.login(username, password);
 
             if (user == null){
                 loginView.setActionTargetText("Invalid Username or password!");
@@ -76,7 +78,7 @@ public class LoginController {
                 {
                     System.out.println("merge EMPLOYEE");
                     EmployeeView employeeView = new EmployeeView(employeeStage, employeeModel);
-                    new EmployeeController(employeeView, employeeModel, bookService, authenticationService);
+                    new EmployeeController(employeeView, employeeModel, bookService, authenticationService, user);
                 }
 
                 if (user.getRoles().get(0).getRole().equals(ADMINISTRATOR))
@@ -110,4 +112,7 @@ public class LoginController {
         }
     }
 
+    public User getUser() {
+        return user;
+    }
 }

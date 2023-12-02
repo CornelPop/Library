@@ -22,6 +22,12 @@ public interface BookRepository {
 
     boolean updateBillBookId(Long billId, Long newBookId);
 
+    int getUserIdByUsername(String username);
+
+    List<Bill> findAllBillsOfAnEmployee(Long customer_id);
+
+    boolean updateBillCustomerId(Long billId, Long newCustomerId);
+
     boolean updateStock(Book book, int newStock);
 
     boolean updateEmployee(User user, String username, String password);
