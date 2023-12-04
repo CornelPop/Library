@@ -150,7 +150,7 @@ public class EmployeeView {
         bookIdColumn.setMinWidth(100);
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("book_id"));
 
-        TableColumn<Bill, String> customerIdColumn = new TableColumn<>("Customer Id");
+        TableColumn<Bill, String> customerIdColumn = new TableColumn<>("Employee Id");
         customerIdColumn.setMinWidth(100);
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customer_id"));
 

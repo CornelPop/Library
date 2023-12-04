@@ -34,7 +34,7 @@ public class GeneratePdf
         for (Bill bill : allBillsOfAnEmployee) {
             Paragraph paragraph2 = new Paragraph("Bill id: " + bill.getId() + "\n" +
                     "Book id: " + bill.getBook_id() + "\n" +
-                    "Customer id: " + bill.getCustomer_id() + "\n" +
+                    "Employee id: " + bill.getCustomer_id() + "\n" +
                     "Quantity: " + bill.getQuantity() + "\n" +
                     "Amount paid: " + bill.getAmountPaid() + " lei \n", font2);
             document.add(paragraph2);
@@ -68,7 +68,7 @@ public class GeneratePdf
             for (Bill bill : allBillsOfAnEmployee) {
                 Paragraph paragraph2 = new Paragraph("  Bill id: " + bill.getId() + "\n" +
                         "   Book id: " + bill.getBook_id() + "\n" +
-                        "   Customer id: " + bill.getCustomer_id() + "\n" +
+                        "   Employee id: " + bill.getCustomer_id() + "\n" +
                         "   Quantity: " + bill.getQuantity() + "\n" +
                         "   Amount paid: " + bill.getAmountPaid() + " lei \n", font2);
                 document.add(paragraph2);
